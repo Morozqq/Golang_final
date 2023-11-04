@@ -23,7 +23,7 @@ type Flower struct {
 
 // Water Simulation, sprinkling method
 func (f *Flower) Water() {
-	fmt.Println("Поливание цветка %s/n", f.Name)
+	fmt.Printf("Watering the flower %s\n", f.Name)
 	f.IsDry = false
 }
 
