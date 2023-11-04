@@ -1,19 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	flowers := []Flower{
-		{Name: "Роза", IsDry: true},
-		{Name: "Тюльпан", IsDry: false},
-		{Name: "Лилия", IsDry: true},
-		{Name: "Георгина", IsDry: true},
-		{Name: "Подсолнух", IsDry: false},
-	}
-
-	waterCommands := make([]Command, 0)
-	for _, flower := range flowers {
-		waterCommands = append(waterCommands, &WaterFlowerCommand{Flower: &flower})
+		{Name: "Роза", IsDry: true, State: &DryState{}},
+		{Name: "Тюльпан", IsDry: false, State: &HealthyState{}},
+		{Name: "Лилия", IsDry: true, State: &DryState{}},
+		{Name: "Георгина", IsDry: true, State: &DryState{}},
+		{Name: "Подсолнух", IsDry: false, State: &HealthyState{}},
 	}
 
 	fmt.Println("Welcome to the Flower Care Console:")
@@ -44,7 +41,7 @@ func main() {
 				return
 			}
 			if flowerChoice > 0 && flowerChoice <= len(flowers) {
-				waterCommands[flowerChoice-1].Execute()
+				flowers[flowerChoice-1].Water()
 			} else {
 				fmt.Println("Invalid flower choice.")
 			}
