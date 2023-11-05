@@ -18,6 +18,7 @@ func main() {
 		fmt.Println("Options:")
 		fmt.Println("1 - Water a flower")
 		fmt.Println("2 - Add a new flower")
+		fmt.Println("3 - Remove a flower")
 		fmt.Println("0 - Exit")
 
 		var choice int
@@ -66,6 +67,28 @@ func main() {
 			invoker := &GardenerInvoker{}
 			invoker.AddCommand(addCommand)
 			invoker.ExecuteCommands()
+		case 3:
+			fmt.Println("Choose a flower to remove:")
+			for i, flower := range flowers {
+				fmt.Printf("%d - %s\n", i+1, flower.Name)
+			}
+			var flowerChoice int
+			fmt.Print("Enter the number of the flower to remove: ")
+			_, err := fmt.Scan(&flowerChoice)
+			if err != nil {
+				fmt.Printf("Error: %v\n", err)
+				return
+			}
+			if flowerChoice > 0 && flowerChoice <= len(flowers) {
+				// Create a RemoveFlowerCommand and add it to the invoker.
+				removeCommand := &RemoveFlowerCommand{Flowers: &flowers, FlowerIndex: flowerChoice - 1}
+				invoker := &GardenerInvoker{}
+				invoker.AddCommand(removeCommand)
+				invoker.ExecuteCommands()
+			} else {
+				fmt.Println("Invalid flower choice.")
+			}
+
 		case 0:
 			fmt.Println("Exiting Flower Care Console.")
 			return
