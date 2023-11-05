@@ -6,17 +6,18 @@ import (
 
 func main() {
 	flowers := []Flower{
-		{Name: "Роза", IsDry: true, State: &DryState{}},
-		{Name: "Тюльпан", IsDry: false, State: &HealthyState{}},
-		{Name: "Лилия", IsDry: true, State: &DryState{}},
-		{Name: "Георгина", IsDry: true, State: &DryState{}},
-		{Name: "Подсолнух", IsDry: false, State: &HealthyState{}},
+		{Name: "Rose", IsDry: true, State: &DryState{}},
+		{Name: "Tulip", IsDry: false, State: &HealthyState{}},
+		{Name: "Lily", IsDry: true, State: &DryState{}},
+		{Name: "Dahlia", IsDry: true, State: &DryState{}},
+		{Name: "Sunflower", IsDry: false, State: &HealthyState{}},
 	}
 
 	fmt.Println("Welcome to the Flower Care Console:")
 	for {
 		fmt.Println("Options:")
 		fmt.Println("1 - Water a flower")
+		fmt.Println("2 - Add a new flower")
 		fmt.Println("0 - Exit")
 
 		var choice int
@@ -41,10 +42,30 @@ func main() {
 				return
 			}
 			if flowerChoice > 0 && flowerChoice <= len(flowers) {
-				flowers[flowerChoice-1].Water()
+				// Create a WaterFlowerCommand and add it to the invoker.
+				waterCommand := &WaterFlowerCommand{Flower: &flowers[flowerChoice-1]}
+				invoker := &GardenerInvoker{}
+				invoker.AddCommand(waterCommand)
+				invoker.ExecuteCommands()
 			} else {
 				fmt.Println("Invalid flower choice.")
 			}
+		case 2:
+			// Get the details of the new flower and create an AddFlowerCommand.
+			var newFlowerName string
+			fmt.Print("Enter the name of the new flower: ")
+			_, err := fmt.Scan(&newFlowerName)
+			if err != nil {
+				fmt.Printf("Error: %v\n", err)
+				return
+			}
+			newFlower := Flower{Name: newFlowerName, IsDry: true}
+			addCommand := &AddFlowerCommand{Flowers: &flowers, NewFlower: newFlower}
+
+			// Add the AddFlowerCommand to the invoker and execute it.
+			invoker := &GardenerInvoker{}
+			invoker.AddCommand(addCommand)
+			invoker.ExecuteCommands()
 		case 0:
 			fmt.Println("Exiting Flower Care Console.")
 			return

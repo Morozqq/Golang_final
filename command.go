@@ -6,6 +6,7 @@ type Command interface {
 	Execute()
 }
 
+// Watering
 type WaterFlowerCommand struct {
 	Flower *Flower
 }
@@ -38,4 +39,15 @@ func (g *GardenerInvoker) ExecuteCommands() {
 	for _, cmd := range g.Commands {
 		cmd.Execute()
 	}
+}
+
+// Adding a flower
+type AddFlowerCommand struct {
+	Flowers   *[]Flower
+	NewFlower Flower
+}
+
+func (a *AddFlowerCommand) Execute() {
+	*a.Flowers = append(*a.Flowers, a.NewFlower)
+	fmt.Printf("Added a new flower: %s\n", a.NewFlower.Name)
 }
