@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 func main() {
@@ -19,6 +21,7 @@ func main() {
 		fmt.Println("1 - Water a flower")
 		fmt.Println("2 - Add a new flower")
 		fmt.Println("3 - Remove a flower")
+		fmt.Println("4 - Create your bouquet")
 		fmt.Println("0 - Exit")
 
 		var choice int
@@ -89,6 +92,45 @@ func main() {
 				fmt.Println("Invalid flower choice.")
 			}
 
+		case 4:
+			fmt.Println("Create your bouquet:")
+			if len(flowers) > 0 {
+				fmt.Println("Available flowers:")
+				for i, flower := range flowers {
+					fmt.Printf("%d - %s\n", i+1, flower.Name)
+				}
+				fmt.Print("Enter the numbers of flowers that will be in your bouquet (comma-separated): ")
+				var input string
+				_, err := fmt.Scan(&input)
+				if err != nil {
+					fmt.Printf("Error: %v\n", err)
+					return
+				}
+			
+				choiceStrings := strings.Split(input, ",")
+				var flowerChoices []int
+
+				for _, choiceStr := range choiceStrings {
+					choice, err := strconv.Atoi(strings.TrimSpace(choiceStr))
+					if err != nil {
+						fmt.Printf("Invalid choice: %v\n", choiceStr)
+					} else if choice > 0 && choice <= len(flowers) {
+						flowerChoices = append(flowerChoices, choice)
+					}
+				}
+
+				if len(flowerChoices) > 0 {
+					fmt.Println("You created your bouquet!")
+					fmt.Println("Selected flowers in your bouquet:")
+					for i, choice := range flowerChoices {
+						fmt.Printf("%d - %s\n", i+1, flowers[choice-1].Name)
+					}
+				} else {
+					fmt.Println("Try to choose other flowers!")
+				}
+			} else {
+				fmt.Println("No available flowers to create a bouquet!")
+			}
 		case 0:
 			fmt.Println("Exiting Flower Care Console.")
 			return
