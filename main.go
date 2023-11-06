@@ -99,14 +99,14 @@ func main() {
 				for i, flower := range flowers {
 					fmt.Printf("%d - %s\n", i+1, flower.Name)
 				}
-				fmt.Print("Enter the numbers of flowers that will be in your bouquet (comma-separated): ")
+				fmt.Print("Enter the numbers of flowers that will be in your bouquet: ")
 				var input string
 				_, err := fmt.Scan(&input)
 				if err != nil {
 					fmt.Printf("Error: %v\n", err)
 					return
 				}
-			
+
 				choiceStrings := strings.Split(input, ",")
 				var flowerChoices []int
 
